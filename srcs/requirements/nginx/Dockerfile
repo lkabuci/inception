@@ -1,9 +1,11 @@
 FROM debian:stable
 
 RUN apt update
-RUN apt install vim -y
-RUN apt install nginx -y
-RUN apt install openssl -y
-RUN apt install iproute2 -y
+RUN apt install -y nginx openssl iproute2 vim
+
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+COPY conf/default /etc/nginx/sites-enabled/default
+
+COPY conf/certs/ /etc/nginx/certs/
 
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
