@@ -1,0 +1,29 @@
+version: "3"
+services:
+  webserver:
+    build:
+      context: requirements/nginx/
+      dockerfile: Dockerfile
+    ports:
+      - "443:443"
+    volumes:
+      - ./requirements/nginx/conf/nginx.conf:/etc/nginx.conf
+      - ./requirements/nginx/conf/default:/etc/nginx/sites-enabled/default
+      - ./requirements/nginx/conf/certs:/etc/nginx/certs
+      # - ./requirements/app:/app
+
+        #   database:
+        #     build:
+        #       context: requirements/mariadb/
+        #       dockerfile: Dockerfile
+        #     ports:
+        #       - "3306:3306"
+        #     env_file:
+        #       - .env
+        #     volumes:
+        #       - database:/var/lib/mysql
+        # 
+        # volumes:
+        #   database:
+        # 
+

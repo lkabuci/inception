@@ -1,1 +1,2 @@
-srcs/requirements/nginx/conf/certs
+certs/
+.env
