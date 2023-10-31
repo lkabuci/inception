@@ -4,5 +4,7 @@ all:
 down:
 	@docker compose -f srcs/docker-compose.yml down
 
-re: down all
+fclean:
+	@system prune -af 
 
+re: down all

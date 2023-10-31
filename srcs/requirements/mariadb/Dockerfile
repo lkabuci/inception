@@ -1,7 +1,9 @@
-FROM debian:stable
+FROM debian:bullseye
 
 RUN apt update
-RUN apt install -y mariadb-server mariadb-client iproute2 vim
+RUN apt install -y mariadb-server iproute2 vim
 
-ENTRYPOINT ["mariadbd"]
+# service mariadb restart
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
