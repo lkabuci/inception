@@ -1,9 +1,20 @@
 FROM debian:bullseye
 
-RUN apt update
-RUN apt install -y mariadb-server iproute2 vim
+# Set environment variables
+ENV MARIADB_ROOT_PASSWORD=rootpassword
+ENV MARIADB_DATABASE=masterdb
+ENV MARIADB_USER=masteruser
+ENV MARIADB_PASSWORD=masterpass
 
-# service mariadb restart
+# Update the package listing, install MariaDB server, and clean up the cache
+RUN apt update && \
+    apt install -y mariadb-server && \
+    rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# Copy the setup script into the image
+COPY tools/setup.sh /usr/local/bin/
+
+# Set permissions for the setup script and ensure it runs on container start
+RUN chmod +x /usr/local/bin/setup.sh
+ENTRYPOINT ["/usr/local/bin/setup.sh"]
 
