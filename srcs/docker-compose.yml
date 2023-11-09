@@ -22,8 +22,18 @@ services:
     volumes:
       - database:/var/lib/mysql
       # - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+  
+  wordpress:
+    build:
+      context: requirements/wordpress/
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
    
 volumes:
   database:
-        
-
+  wordpress:
