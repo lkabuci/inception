@@ -1,8 +1,11 @@
-FROM debian:stable
+FROM debian:bullseye
 
-RUN apt update
-RUN apt install -y php-fpm iproute2 vim 
-
-RUN apt install -y wget
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    php-fpm=2:7.4+76 \
+    iproute2=5.10.0-4 \
+    vim=2:8.2.2434-3+deb11u1 \
+    wget=1.21-1+deb11u1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # ENTRYPOINT []

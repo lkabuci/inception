@@ -6,10 +6,12 @@ ENV MARIADB_DATABASE=masterdb
 ENV MARIADB_USER=masteruser
 ENV MARIADB_PASSWORD=masterpass
 
-# Update the package listing, install MariaDB server, and clean up the cache
-RUN apt update && \
-    apt install -y mariadb-server && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mariadb-server=1:10.5.21-0+deb11u1 \
+    iproute2=5.10.0-4 \
+    vim=2:8.2.2434-3+deb11u1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the setup script into the image
 COPY tools/setup.sh /usr/local/bin/
