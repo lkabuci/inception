@@ -8,4 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# ENTRYPOINT []
+WORKDIR /var/www/html
+
+RUN wget -O wordpress.tar.gz https://wordpress.org/wordpress-6.4.1.tar.gz -q \
+    && tar -xzf wordpress.tar.gz --strip-components=1 \
+    && rm wordpress.tar.gz

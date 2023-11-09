@@ -19,4 +19,3 @@ COPY tools/setup.sh /usr/local/bin/
 # Set permissions for the setup script and ensure it runs on container start
 RUN chmod +x /usr/local/bin/setup.sh
 ENTRYPOINT ["/usr/local/bin/setup.sh"]
-
