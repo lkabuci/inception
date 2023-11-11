@@ -3,12 +3,11 @@
 # This entrypoint script will generate a self-signed certificates
 # for SSL and run the nginx daemon
 
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-CERTS_DIR="$SCRIPT_DIR/../conf/certs"
-mkdir -p $SCRIPT_DIR/../conf/certs
+CERTS_DIR="/etc/nginx/certs"
+mkdir -p "$CERTS_DIR"
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout $CERTS_DIR/nginx.key -out $CERTS_DIR/nginx.crt -subj "/CN=localhost"
 
-nginx -g daemon off;
+nginx -g "daemon off;"
 
 # req \                                       # certificate request
 # -x509 \                                     # create a self-signed certificate rather than a certificate request.

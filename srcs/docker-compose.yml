@@ -7,23 +7,9 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./requirements/nginx/conf/nginx.conf:/etc/nginx.conf
-      - ./requirements/nginx/conf/default:/etc/nginx/sites-enabled/default
-      - ./requirements/nginx/conf/certs:/etc/nginx/certs
+      - WordPress:/var/www/html/
 
-  db:
-    build:
-      context: requirements/mariadb/
-      dockerfile: Dockerfile
-    ports:
-      - "3306:3306"
-    env_file:
-      - .env
-    volumes:
-      - database:/var/lib/mysql
-      # - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
-  
-  wordpress:
+  website:
     build:
       context: requirements/wordpress/
       dockerfile: Dockerfile
@@ -32,8 +18,20 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress:/var/www/html
-   
-volumes:
+      - WordPress:/var/www/html/
+
   database:
-  wordpress:
+    build:
+      context: requirements/mariadb/
+      dockerfile: Dockerfile
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - db:/var/lib/mysql
+      # - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
+ 
+volumes:
+  db:
+  WordPress:

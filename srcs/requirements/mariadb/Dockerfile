@@ -1,3 +1,4 @@
+# mariadb
 FROM debian:bullseye
 
 # Set environment variables
