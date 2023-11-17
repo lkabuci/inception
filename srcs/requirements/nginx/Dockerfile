@@ -1,20 +1,23 @@
 # nginx
 FROM debian:bullseye
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    nginx=1.18.0-6.1+deb11u3 \
-    openssl=1.1.1w-0+deb11u1 \
-    iproute2=5.10.0-4 \
-    vim=2:8.2.2434-3+deb11u1 \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        nginx=1.18.0-6.1+deb11u3 \
+        openssl=1.1.1w-0+deb11u1 \
+        vim=2:8.2.2434-3+deb11u1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-COPY ./conf/default /etc/nginx/sites-available/default
+WORKDIR /etc/ssl/
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout nginx.key \
+    -out nginx.crt \
+    -subj "/CN=localhost"
 
-COPY ./tools/entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY conf/nginx.conf /etc/nginx/conf.d
+COPY index.html /var/www/html/
 
 EXPOSE 443
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
