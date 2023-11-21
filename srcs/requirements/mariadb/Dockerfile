@@ -2,15 +2,14 @@
 FROM debian:bullseye
 
 # Set environment variables
-ENV MARIADB_ROOT_PASSWORD=rootpassword
-ENV MARIADB_DATABASE=masterdb
-ENV MARIADB_USER=masteruser
-ENV MARIADB_PASSWORD=masterpass
+ENV MYSQL_DATABASE=wordpress_db
+ENV MYSQL_USER=wordpress_user
+ENV MYSQL_PASSWORD=wordpress_pass
+ENV MYSQL_ROOT_PASSWORD=super+secret+pass
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mariadb-server=1:10.5.21-0+deb11u1 \
-    iproute2=5.10.0-4 \
-    vim=2:8.2.2434-3+deb11u1 \
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        mariadb-server=1:10.5.21-0+deb11u1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

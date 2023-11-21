@@ -1,16 +1,18 @@
 #!/bin/bash
 
-# Start the MariaDB service
 service mariadb start
 
-# Wait for MariaDB service to start
-sleep 10
+# wait untill mariadb stated
+until timeout 1 bash -c "</dev/tcp/localhost/3306" > /dev/null 2>&1; do
+    echo "Waiting for mariadb database to start ..."
+    sleep 1
+done
 
-# Run the SQL setup
-mariadb -e "CREATE DATABASE IF NOT EXISTS $MARIADB_DATABASE;"
-mariadb -e "CREATE USER IF NOT EXISTS '$MARIADB_USER'@'%' IDENTIFIED BY '$MARIADB_PASSWORD';"
-mariadb -e "GRANT ALL PRIVILEGES ON $MARIADB_DATABASE.* TO '$MARIADB_USER'@'%';"
+mariadb -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
+mariadb -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+mariadb -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';"
 mariadb -e "FLUSH PRIVILEGES;"
 
-bash
+service mariadb stop
 
+mariadbd
