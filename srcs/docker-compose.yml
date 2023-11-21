@@ -1,37 +1,40 @@
 version: "3"
 services:
-  webserver:
-    build:
-      context: requirements/nginx/
-      dockerfile: Dockerfile
-    ports:
-      - "443:443"
-    volumes:
-      - WordPress:/var/www/html/
-
-  website:
-    build:
-      context: requirements/wordpress/
-      dockerfile: Dockerfile
-    ports:
-      - "9000:9000"
-    env_file:
-      - .env
-    volumes:
-      - WordPress:/var/www/html/
 
   database:
     build:
       context: requirements/mariadb/
-      dockerfile: Dockerfile
-    ports:
-      - "3306:3306"
-    env_file:
-      - .env
+    container_name: inception_mariadb
+    environment:
+      - MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      - MYSQL_USER: "${MYSQL_USER}"
+      - MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      - MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+
+  wordpress-fpm:
+    build:
+      context: requirements/wordpress/
+    container_name: inception_php_fpm
+    environment:
+      - WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      - WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+      - WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+      - WORDPRESS_DB_PASS: "${WORDPRESS_DB_PASS}"
     volumes:
-      - db:/var/lib/mysql
-      # - ./requirements/mariadb/conf/50-server.cnf:/etc/mysql/mariadb.conf.d/50-server.cnf
- 
+      - wp-files:/var/www/html/
+    depends_on:
+      - database
+
+  webserver:
+    build:
+      context: requirements/nginx/
+    container_name: inception_nginx
+    ports:
+      - "443:443"
+    volumes:
+      - wp_files:/var/www/html/
+    depends_on:
+      - wordpress-fpm
+
 volumes:
-  db:
-  WordPress:
+  wp_files:
