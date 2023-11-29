@@ -4,37 +4,62 @@ services:
   database:
     build:
       context: requirements/mariadb/
-    container_name: inception_mariadb
+    container_name: database
+    env_file:
+      - ./.env
     environment:
-      - MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      - MYSQL_USER: "${MYSQL_USER}"
-      - MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      - MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${MYSQL_DATABASE}"
+      MYSQL_USER: "${MYSQL_USER}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+    volumes:
+      - db_volume:/var/lib/mysql
+    networks:
+      inception:
+        ipv4_address: 172.18.0.2
 
   wordpress-fpm:
     build:
       context: requirements/wordpress/
-    container_name: inception_php_fpm
+    container_name: website
+    env_file:
+      - ./.env
     environment:
-      - WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-      - WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
-      - WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-      - WORDPRESS_DB_PASS: "${WORDPRESS_DB_PASS}"
+      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
+      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
+      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
+      WORDPRESS_DB_PASS: "${WORDPRESS_DB_PASS}"
     volumes:
-      - wp-files:/var/www/html/
+      - wp_volume:/var/www/html/
     depends_on:
       - database
+    networks:
+      inception:
+        ipv4_address: 172.18.0.3
 
   webserver:
     build:
       context: requirements/nginx/
-    container_name: inception_nginx
+    container_name: webserver
     ports:
       - "443:443"
     volumes:
-      - wp_files:/var/www/html/
+      - wp_volume:/var/www/html/
     depends_on:
       - wordpress-fpm
+    networks:
+      inception:
+        ipv4_address: 172.18.0.4
 
 volumes:
-  wp_files:
+  wp_volume:
+  db_volume:
+
+networks:
+  inception:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.18.0.0/24"
+          gateway: "172.18.0.1"
