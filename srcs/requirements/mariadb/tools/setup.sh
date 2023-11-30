@@ -1,17 +1,9 @@
 #!/bin/bash
 
+sed -i 's/# port = 3306/port = 3306/'	/etc/mysql/mariadb.cnf
+sed -i 's/127.0.0.1/0.0.0.0/' 		/etc/mysql/mariadb.conf.d/50-server.cnf
+
 service mariadb start
-
-# wait untill mariadb stated using netcat tool
-for ((i=1; i<=5; i++)); do
-    if nc -z localhost 3306 >/dev/null; then
-        echo "MariaDB database is up."
-        break
-    fi
-    echo "Waiting for MariaDB database to start ..."
-    sleep 5
-done
-
 
 mariadb -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;"
 mariadb -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
