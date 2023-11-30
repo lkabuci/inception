@@ -1,34 +1,23 @@
-version: "3"
+---
+version: "3.8"
 services:
-
   database:
     build:
       context: requirements/mariadb/
     container_name: database
     env_file:
-      - ./.env
-    environment:
-      MYSQL_DATABASE: "${MYSQL_DATABASE}"
-      MYSQL_USER: "${MYSQL_USER}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
+      - .env
     volumes:
       - db_volume:/var/lib/mysql
     networks:
       inception:
         ipv4_address: 172.18.0.2
-
-  wordpress-fpm:
+  website:
     build:
       context: requirements/wordpress/
     container_name: website
     env_file:
-      - ./.env
-    environment:
-      WORDPRESS_DB_HOST: "${WORDPRESS_DB_HOST}"
-      WORDPRESS_DB_NAME: "${WORDPRESS_DB_NAME}"
-      WORDPRESS_DB_USER: "${WORDPRESS_DB_USER}"
-      WORDPRESS_DB_PASS: "${WORDPRESS_DB_PASS}"
+      - .env
     volumes:
       - wp_volume:/var/www/html/
     depends_on:
@@ -36,30 +25,27 @@ services:
     networks:
       inception:
         ipv4_address: 172.18.0.3
-
   webserver:
     build:
       context: requirements/nginx/
     container_name: webserver
     ports:
-      - "443:443"
+      - 443:443
     volumes:
       - wp_volume:/var/www/html/
     depends_on:
-      - wordpress-fpm
+      - website
     networks:
       inception:
         ipv4_address: 172.18.0.4
-
 volumes:
-  wp_volume:
-  db_volume:
-
+  wp_volume: null
+  db_volume: null
 networks:
   inception:
     driver: bridge
     ipam:
       driver: default
       config:
-        - subnet: "172.18.0.0/24"
-          gateway: "172.18.0.1"
+        - subnet: 172.18.0.0/24
+          gateway: 172.18.0.1
