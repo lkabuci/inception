@@ -1,5 +1,5 @@
 all:
-	@docker compose -f srcs/docker-compose.yml up -d &&\
+	@docker compose -f srcs/docker-compose.yml up --build -d &&\
 	docker cp webserver:/etc/ssl/nginx/inception.crt ~/
 
 down:
