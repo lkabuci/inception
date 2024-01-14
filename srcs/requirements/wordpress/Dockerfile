@@ -6,7 +6,8 @@ RUN set -x &&\
       ca-certificates=20210119 \
       wget=1.21-1+deb11u1 \
       php-fpm=2:7.4+76 \
-      php-mysql=2:7.4+76 &&\
+      php-mysql=2:7.4+76 \
+      mariadb-client=1:10.5.21-0+deb11u1 &&\
     wget --progress=bar:force:noscroll -O /usr/local/bin/wp \
     	https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar &&\
     apt-get remove --purge --auto-remove -y &&\

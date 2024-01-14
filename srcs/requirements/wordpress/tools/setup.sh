@@ -2,6 +2,8 @@
 
 set -x
 
+while ! mariadb -h"$WP_HOST" -u"$WP_USER" -p"$WP_PASS" "$WP_DB" &> /dev/null
+
 chmod +x /usr/local/bin/wp
 
 mkdir -p /var/www/html/ && cd /var/www/html || exit 1
