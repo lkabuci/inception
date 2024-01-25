@@ -12,6 +12,12 @@ services:
     networks:
       inception:
         ipv4_address: 172.18.0.2
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+      timeout: 5s
   website:
     build:
       context: requirements/wordpress/
@@ -21,7 +27,8 @@ services:
     volumes:
       - wp_volume:/var/www/html/
     depends_on:
-      - database
+      database:
+        condition: service_healthy
     networks:
       inception:
         ipv4_address: 172.18.0.3
@@ -39,8 +46,19 @@ services:
       inception:
         ipv4_address: 172.18.0.4
 volumes:
-  wp_volume: null
-  db_volume: null
+  wp_volume: 
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/relkabou/data/wp_volume
+  db_volume: 
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/relkabou/data/db_volume
+
 networks:
   inception:
     driver: bridge
