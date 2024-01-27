@@ -1,5 +1,6 @@
 # wordpress
 FROM debian:bullseye-slim
+LABEL authors="kaboussi"
 
 RUN set -x &&\
     apt-get update && apt-get install -y --no-install-recommends --no-install-suggests \

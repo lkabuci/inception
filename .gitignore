@@ -1,2 +1,5 @@
 certs/
-# .env
+.idea/
+.vscode/
+.env/
+venv/

@@ -1,4 +1,5 @@
 FROM debian:bullseye-slim as certifier
+LABEL authors="kaboussi"
 
 WORKDIR /etc/ssl/nginx
 RUN set -x &&\
