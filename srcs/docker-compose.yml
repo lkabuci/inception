@@ -1,10 +1,12 @@
 ---
 version: "3.8"
 services:
+
+# Mariadb
   database:
     build:
       context: requirements/mariadb/
-    container_name: database
+    container_name: mariadb
     env_file:
       - .env
     volumes:
@@ -18,10 +20,12 @@ services:
       retries: 5
       start_period: 10s
       timeout: 5s
+    
+# Wordpress
   website:
     build:
       context: requirements/wordpress/
-    container_name: website
+    container_name: wordpress
     env_file:
       - .env
     volumes:
@@ -32,19 +36,41 @@ services:
     networks:
       inception:
         ipv4_address: 172.18.0.3
+
+# Nginx
   webserver:
     build:
       context: requirements/nginx/
-    container_name: webserver
+    container_name: nginx
     ports:
       - 443:443
-    volumes:
-      - wp_volume:/var/www/html/
     depends_on:
       - website
+    volumes:
+      - wp_volume:/var/www/html/
     networks:
       inception:
         ipv4_address: 172.18.0.4
+
+# FTP server
+# Todo: ftp server volume
+  ftp-server:
+    build:
+      context: requirements/ftp/
+    container_name: ftp
+    env_file:
+      - .env
+    ports:
+      - '20:20'
+    depends_on:
+      - webserver
+    # volumes:
+    #   - wp_volume:/home/$"FTP_USER"'
+    networks:
+      inception:
+        ipv4_address: 172.18.0.5
+
+
 volumes:
   wp_volume: 
     driver: local
@@ -58,6 +84,7 @@ volumes:
       type: none
       o: bind
       device: /home/relkabou/data/db_volume
+
 
 networks:
   inception:

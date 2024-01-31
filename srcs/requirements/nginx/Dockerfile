@@ -4,7 +4,8 @@ LABEL authors="kaboussi"
 WORKDIR /etc/ssl/nginx
 RUN set -x &&\
     apt-get update &&\
-    apt-get install -y --no-install-recommends --no-install-suggests openssl=1.1.1w-0+deb11u1 &&\
+    apt-get install -y --no-install-recommends --no-install-suggests\
+    openssl=1.1.1w-0+deb11u1 &&\
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout inception.key \
         -out inception.crt \
