@@ -62,8 +62,9 @@ services:
       - .env
     ports:
       - '20:20'
-    depends_on:
-      - webserver
+    restart: on-failure
+    # depends_on:
+      # - webserver
     # volumes:
     #   - wp_volume:/home/$"FTP_USER"'
     networks:
