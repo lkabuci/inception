@@ -30,9 +30,9 @@ RUN set -x &&\
 COPY --from=certifier /vsftpd.key /etc/ssl/private/vsftpd.key
 COPY --from=certifier /vsftpd.crt /etc/ssl/private/vsftpd.crt
 COPY conf/vsftpd.conf /etc
-COPY tools/logger.sh /usr/bin/logger.sh
+COPY tools/setup.sh /usr/bin/setup.sh
 
-ENTRYPOINT ["/bin/bash", "/usr/bin/logger.sh"]
+ENTRYPOINT ["/bin/bash", "/usr/bin/setup.sh"]
 
 CMD [ "/usr/sbin/vsftpd" ]
 
