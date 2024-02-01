@@ -3,7 +3,7 @@ version: "3.8"
 services:
 
 # Mariadb
-  database:
+  mariadb:
     build:
       context: requirements/mariadb/
     container_name: mariadb
@@ -22,7 +22,7 @@ services:
       timeout: 5s
     
 # Wordpress
-  website:
+  wordpress:
     build:
       context: requirements/wordpress/
     container_name: wordpress
@@ -31,21 +31,21 @@ services:
     volumes:
       - wp_volume:/var/www/html/
     depends_on:
-      database:
+      mariadb:
         condition: service_healthy
     networks:
       inception:
         ipv4_address: 172.18.0.3
 
 # Nginx
-  webserver:
+  nginx:
     build:
       context: requirements/nginx/
     container_name: nginx
     ports:
       - 443:443
     depends_on:
-      - website
+      - wordpress
     volumes:
       - wp_volume:/var/www/html/
     networks:
@@ -53,8 +53,7 @@ services:
         ipv4_address: 172.18.0.4
 
 # FTP server
-# Todo: ftp server volume
-  ftp-server:
+  ftp:
     build:
       context: requirements/ftp/
     container_name: ftp
@@ -67,7 +66,7 @@ services:
       inception:
         ipv4_address: 172.18.0.5
   
-
+# Adminer
   adminer:
     build:
       context: requirements/adminer/
@@ -76,7 +75,7 @@ services:
       - .env
     restart: on-failure
     depends_on:
-      - website
+      - wordpress
     volumes:
       - wp_volume:/var/www/html/
     networks:
