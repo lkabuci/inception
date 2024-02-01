@@ -63,13 +63,25 @@ services:
     ports:
       - '20:20'
     restart: on-failure
-    # depends_on:
-      # - webserver
-    # volumes:
-    #   - wp_volume:/home/$"FTP_USER"'
     networks:
       inception:
         ipv4_address: 172.18.0.5
+  
+
+  adminer:
+    build:
+      context: requirements/adminer/
+    container_name: adminer
+    env_file:
+      - .env
+    restart: on-failure
+    depends_on:
+      - website
+    volumes:
+      - wp_volume:/var/www/html/
+    networks:
+      inception:
+        ipv4_address: 172.18.0.6
 
 
 volumes:

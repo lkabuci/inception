@@ -6,7 +6,7 @@ WP_VOLUME_DIR := /home/relkabou/data/wp_volume
 all:
 	@mkdir -p $(DB_VOLUME_DIR)
 	@mkdir -p $(WP_VOLUME_DIR)
-	@docker compose -f srcs/docker-compose.yml up --build
+		@docker compose -f srcs/docker-compose.yml up --build
 
 cp:
 	@docker cp webserver:/etc/ssl/nginx/inception.crt ~/ || true
