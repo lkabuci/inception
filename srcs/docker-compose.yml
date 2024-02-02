@@ -82,6 +82,20 @@ services:
       inception:
         ipv4_address: 172.18.0.6
 
+# Redis
+  redis:
+    build:
+      context: requirements/redis/
+    container_name: redis
+    env_file:
+      - .env
+    restart: on-failure
+    depends_on:
+      - wordpress
+    networks:
+      inception:
+        ipv4_address: 172.18.0.7
+
 
 volumes:
   wp_volume: 
