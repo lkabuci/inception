@@ -22,6 +22,7 @@ wp config set WP_REDIS_DATABASE "$WP_REDIS_DATABASES" --add --allow-root --path=
 wp plugin install redis-cache --activate --path="/var/www/html/" --allow-root
 wp redis enable --path="/var/www/html/" --allow-root
 
+chown www-data:www-data *
 
 wp plugin install multiple-domain --activate --path="/var/www/html/" --allow-root
 
