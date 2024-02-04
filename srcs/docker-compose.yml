@@ -110,6 +110,21 @@ services:
       inception:
         ipv4_address: 172.18.0.8
 
+# Jupiter Notebook
+  jupyter_notebook:
+    build:
+      context: requirements/jupiter/
+    container_name: jupiter
+    depends_on:
+      - wordpress
+    ports:
+      - "8888:8888"
+    networks:
+      inception:
+        ipv4_address: 172.18.0.9
+    # volumes:
+    #   - ./requirements/jupiter/:/jupiter
+
 volumes:
   wp_volume: 
     driver: local
