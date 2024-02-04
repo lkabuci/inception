@@ -111,19 +111,17 @@ services:
         ipv4_address: 172.18.0.8
 
 # Jupiter Notebook
-  jupyter_notebook:
+  jupyterlab:
     build:
-      context: requirements/jupiter/
-    container_name: jupiter
+      context: requirements/jupyterlab/
+    container_name: jupyterlab
     depends_on:
       - wordpress
     ports:
-      - "8888:8888"
+      - 8888:8888
     networks:
       inception:
         ipv4_address: 172.18.0.9
-    # volumes:
-    #   - ./requirements/jupiter/:/jupiter
 
 volumes:
   wp_volume: 
