@@ -20,4 +20,4 @@ COPY conf/templates/ .
 COPY conf/app.py .
 COPY conf/wsgi.py .
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8080", "wsgi:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "wsgi:app"]
