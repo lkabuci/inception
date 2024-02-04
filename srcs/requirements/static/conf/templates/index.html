@@ -2,9 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Index page</title>
+    <title>System Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+            color: #666;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-The hostname of the container is <b>{{ hostname }}</b> and its IP is <b>{{ ip }}</b>.
+    <div class="container">
+        <h1>System Information</h1>
+        <p>The <span class="highlight">hostname</span> of the container is <b>{{ hostname }}</b>.</p>
+        <p>The <span class="highlight">IP address</span> of the container is <b>{{ ip }}</b>.</p>
+        <p>System details:</p>
+        <ul>
+            <li><span class="highlight">OS:</span> {{ os }}</li>
+            <li><span class="highlight">CPU:</span> {{ cpu }}</li>
+            <li><span class="highlight">Memory:</span> {{ memory }}</li>
+            <li><span class="highlight">Disk Space:</span> {{ disk_space }}</li>
+        </ul>
+    </div>
 </body>
 </html>
