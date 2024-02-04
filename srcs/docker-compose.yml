@@ -48,6 +48,7 @@ services:
       - wordpress
     volumes:
       - wp_volume:/var/www/html/
+      - ad_volume:/var/www/adminer/
     networks:
       inception:
         ipv4_address: 172.18.0.4
@@ -77,7 +78,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wp_volume:/var/www/html/
+      - ad_volume:/var/www/adminer/
     networks:
       inception:
         ipv4_address: 172.18.0.6
@@ -103,13 +104,19 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/relkabou/data/wp_volume
-  db_volume: 
+      device: "${HOME}/data/wp_volume"
+  db_volume:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/relkabou/data/db_volume
+      device: "${HOME}/data/db_volume"
+  ad_volume: 
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: "${HOME}/data/ad_volume"
 
 
 networks:
