@@ -1,6 +1,6 @@
 FROM debian:bullseye-slim
 
-WORKDIR /var/www/html
+WORKDIR /var/www/adminer
 
 RUN set -x \
     && apt-get update \
