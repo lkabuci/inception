@@ -24,8 +24,6 @@ wp redis enable --path="/var/www/html/" --allow-root
 
 chown www-data:www-data *
 
-wp plugin install multiple-domain --activate --path="/var/www/html/" --allow-root
-
 service php7.4-fpm stop
 
 exec "$@"

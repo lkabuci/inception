@@ -104,8 +104,8 @@ services:
     container_name: static
     env_file:
       - .env
-    depends_on:
-      - wordpress
+    ports:
+      - 5000:5000
     networks:
       inception:
         ipv4_address: 172.18.0.8
@@ -115,8 +115,6 @@ services:
     build:
       context: requirements/jupyterlab/
     container_name: jupyterlab
-    depends_on:
-      - wordpress
     ports:
       - 8888:8888
     networks:
