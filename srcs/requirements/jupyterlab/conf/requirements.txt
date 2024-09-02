@@ -1,1 +1,1 @@
-jupyterlab==4.0.12
+jupyterlab==4.2.5
